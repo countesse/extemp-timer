@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Extemp and TV Prep Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1ec;--panel:#fbfcfa;--ink:#18282a;--mute:#5b6b6a;--line:#d3dad3;--ext:#0f766e;--hs:#b45309;--ms:#6b3fa0;--hot:#fde68a;--hotink:#4a3200;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a1a;--panel:#1a2524;--ink:#e6efec;--mute:#93a5a2;--line:#2b3a39;--ext:#3ec5b5;--hs:#f0a04b;--ms:#b99af0;--hot:#5a4708;--hotink:#ffe9a6}}
+:root[data-theme="dark"]{--bg:#121a1a;--panel:#1a2524;--ink:#e6efec;--mute:#93a5a2;--line:#2b3a39;--ext:#3ec5b5;--hs:#f0a04b;--ms:#b99af0;--hot:#5a4708;--hotink:#ffe9a6}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.45 Archivo,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+main{max-width:1180px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:clamp(26px,4vw,38px);font-weight:750;font-stretch:80%;letter-spacing:-.01em;margin:0}
+h2{font-size:20px;margin:0;font-weight:700}
+.top{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-end;margin-bottom:16px}
+.clock{text-align:right;color:var(--mute);font-size:14px}
+.clock b{display:block;font-size:30px;color:var(--ink);font-weight:700;font-stretch:80%}
+.banner{background:var(--ink);color:var(--bg);border-radius:10px;padding:12px 18px;display:flex;flex-wrap:nowrap;gap:16px;align-items:baseline;justify-content:space-between;margin-bottom:16px;white-space:nowrap}
+.banner .big{font-size:clamp(16px,3.6vw,26px);font-weight:750;font-stretch:80%;line-height:1.2;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.banner .cd{flex:none}
+#next{background:var(--hot);color:var(--hotink)}
+.banner.rel{background:var(--ext);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .banner.rel{color:#08201d}}
+:root[data-theme="dark"] .banner.rel{color:#08201d}
+.tabbar{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.startwrap label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mute)}
+.startwrap input{padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);font-size:16px}
+button,input,textarea{font:inherit;color:inherit}
+.tab{border:1px solid var(--line);background:var(--panel);padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600}
+.tab[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+:focus-visible{outline:3px solid var(--ext);outline-offset:2px}
+.settings{margin-top:16px;display:flex;flex-wrap:wrap;gap:12px 20px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.settings label{display:flex;flex-direction:column;font-size:13px;color:var(--mute);gap:4px}
+.settings input{width:110px;padding:7px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,470px),1fr));gap:16px;align-items:start}
+.card{background:var(--panel);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:10px;padding:14px;min-width:0}
+.card.wide{grid-column:1/-1}
+.card h2{color:var(--c)}
+.ann .ch{margin-bottom:4px}
+.ch{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute)}
+.step button{width:28px;height:28px;border:1px solid var(--line);background:var(--bg);border-radius:6px;cursor:pointer;font-size:16px;line-height:1}
+.step b{color:var(--ink);min-width:1.5ch;text-align:center}
+table{border-collapse:collapse;width:100%}
+th,td{padding:5px 4px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:600;font-size:13px;color:var(--mute);vertical-align:bottom}
+td.n{color:var(--mute)}
+.code,.room{width:100%;min-width:44px;max-width:110px;padding:5px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-size:15px}
+.room{font-size:13px;margin-top:3px}
+tr.past td{color:var(--mute);background:color-mix(in srgb,var(--line) 45%,transparent)}
+tr.past td.t{text-decoration:line-through;text-decoration-thickness:1px}
+tr.relhot td{background:color-mix(in srgb,var(--ext) 38%,var(--panel));color:var(--ink)}
+tr.hot td{background:var(--hot);color:var(--hotink)}
+td.sp.gone{text-decoration:line-through;text-decoration-thickness:1px}
+tr.hot td.n{color:var(--hotink)}
+.ann{margin:0 0 12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+textarea{width:100%;min-height:0;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-size:14px;line-height:1.35;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600}
+.btn.o{background:transparent;color:var(--ink)}
+.hint{color:var(--mute);font-size:13px}
+@media print{.tabs,.startwrap,.settings,.step,.btn,.top .clock,.banner,.hint{display:none}body{background:#fff;color:#000}.code,.room,textarea{border:none;background:none}tr.past td{opacity:1}tr.hot td{background:none;color:inherit}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <h1>Extemp and TV Prep Schedule</h1>
+    <div class="clock"><b id="clk">--</b></div>
+  </div>
+  <div class="ann">
+    <textarea id="ann" rows="2" aria-label="Starting announcement"></textarea>
+  </div>
+  <div class="banner" id="next" aria-live="polite"></div>
+  <div class="banner rel" id="release" aria-live="polite"></div>
+  <div class="tabbar"><div class="tabs" id="tabs" role="tablist"></div><div class="startwrap" id="startwrap"></div></div>
+  <div class="grid" id="grid"></div>
+  <div class="settings" id="settings"></div>
+</main>
+<script>
+const KEY='extemp-timer-v1';
+const EV=[{k:'ext',n:'Extemp',c:'var(--ext)',iv:'ext'},{k:'hs',n:'TV - HS',c:'var(--hs)',iv:'tv'},{k:'ms',n:'TV - MS',c:'var(--ms)',iv:'tv'}];
+const OLDANN="1. If you are doubling, come to Prep first!\n2. Know your code. You will be called by your code.\n3. When you are called, pick up your TV packet, or your Extemp: pick 3 topics, then pick 1 question and take it with you.\n4. Schematics are posted HERE (indicate where).";
+const ANN="If you are doubling, come to Prep first!\nKnow your code. You will be called by your code.";
+const mk=(name,start,n,fin)=>({name,start,ext:8,tv:6,off:30,
+ ext_:{n:n[0],rooms:fin?['D106']:['D106','D107','D108']},
+ hs:{n:n[1],rooms:fin?['D130']:['D130','B109']},
+ ms:{n:n[2],rooms:fin?['D109']:['D109','D111']}});
+const fresh=()=>({rounds:[mk('Round 1',494,[5,7,4]),mk('Round 2',593,[5,7,4]),mk('Round 3',685,[5,7,4]),mk('Finals',802,[6,6,6],1)],ann:ANN,codes:{},cur:0});
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+if(!S||!S.rounds)S=fresh();
+if(S.ann===OLDANN)S.ann=ANN;
+S.ann=String(S.ann||ANN).replace(/^\s*\d+\.\s*/gm,'');
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const evd=(r,k)=>k==='ext'?r.ext_:r[k];
+['ext','hs','ms'].forEach(k=>{const d1=evd(S.rounds[0],k);[1,2].forEach(i=>{const d=evd(S.rounds[i],k);d.n=d1.n;
+  while(d.rooms.length<d1.rooms.length)d.rooms.push(d1.rooms[d.rooms.length]);
+  while(d.rooms.length>d1.rooms.length)d.rooms.pop()})});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=m=>{m=((Math.round(m)%1440)+1440)%1440;const h=Math.floor(m/60),mm=String(m%60).padStart(2,'0');return (h%12||12)+':'+mm+' '+(h<12?'AM':'PM')};
+const toVal=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+const fromVal=v=>{const p=(v||'0:0').split(':');return (+p[0])*60+(+p[1])};
+const $=id=>document.getElementById(id);
+
+function tabs(){
+  $('tabs').innerHTML=S.rounds.map((r,i)=>`<button class="tab" role="tab" aria-selected="${i===S.cur}" data-i="${i}">${esc(r.name)}</button>`).join('');
+  $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.cur=+b.dataset.i;save();all()});
+}
+function settings(){
+  const r=S.rounds[S.cur];
+  $('startwrap').innerHTML=`<label>Round start<input type="time" id="s-start" value="${toVal(r.start)}"></label>`;
+  $('settings').innerHTML=`
+   <label>Extemp draw interval (min)<input type="number" min="1" max="60" id="s-ext" value="${r.ext}"></label>
+   <label>TV draw interval (min)<input type="number" min="1" max="60" id="s-tv" value="${r.tv}"></label>
+   <label>Prep length (min)<input type="number" min="1" max="120" id="s-off" value="${r.off}"></label>`;
+  const bind=(id,f)=>$(id).oninput=e=>{f(e.target.value);save();grid()};
+  bind('s-start',v=>r.start=fromVal(v));
+  bind('s-ext',v=>r.ext=Math.max(1,+v||1));
+  bind('s-tv',v=>r.tv=Math.max(1,+v||1));
+  bind('s-off',v=>r.off=Math.max(1,+v||1));
+}
+function grid(){
+  const r=S.rounds[S.cur],L='ABCDEF';
+  $('grid').innerHTML=EV.map(e=>{
+    const d=evd(r,e.k),iv=r[e.iv],ns=d.rooms.length;
+    let head=`<tr><th>#</th><th>Draw</th><th>Speaks</th>`+d.rooms.map((rm,j)=>`<th>Section ${L[j]}<br><input class="room" data-e="${e.k}" data-j="${j}" value="${esc(rm)}" aria-label="${e.n} section ${L[j]} room" placeholder="Room"></th>`).join('')+`</tr>`;
+    let rows='';
+    for(let i=0;i<d.n;i++){
+      const t=r.start+i*iv;
+      rows+=`<tr data-t="${t}"><td class="n">${i+1}</td><td class="t">${fmt(t)}</td><td class="sp" data-s="${t+r.off}">${fmt(t+r.off)}</td>`+
+      d.rooms.map((_,j)=>{const k=[S.cur,e.k,i,j].join('|');return `<td><input class="code" data-k="${k}" value="${esc(S.codes[k]||'')}" aria-label="${e.n} slot ${i+1} section ${L[j]} code" placeholder="Code"></td>`}).join('')+`</tr>`;
+    }
+    return `<section class="card${ns>3?' wide':''}" style="--c:${e.c}"><div class="ch"><h2>${e.n}</h2>
+      <span class="step">Speakers <button data-e="${e.k}" data-a="n-" aria-label="Fewer speakers">-</button><b>${d.n}</b><button data-e="${e.k}" data-a="n+" aria-label="More speakers">+</button>
+      Sections <button data-e="${e.k}" data-a="s-" aria-label="Fewer sections">-</button><b>${ns}</b><button data-e="${e.k}" data-a="s+" aria-label="More sections">+</button></span></div>
+      <table>${head}${rows}</table></section>`;
+  }).join('');
+  const g=$('grid');
+  g.querySelectorAll('.code').forEach(i=>i.oninput=()=>{S.codes[i.dataset.k]=i.value;save()});
+  g.querySelectorAll('.room').forEach(i=>i.oninput=()=>{evd(r,i.dataset.e).rooms[+i.dataset.j]=i.value;save()});
+  g.querySelectorAll('.step button').forEach(b=>b.onclick=()=>{
+    const a=b.dataset.a,tg=S.cur<3?[0,1,2]:[S.cur];
+    tg.forEach(i=>{const d=evd(S.rounds[i],b.dataset.e);
+      if(a==='n+')d.n=Math.min(30,d.n+1);
+      if(a==='n-')d.n=Math.max(1,d.n-1);
+      if(a==='s+'&&d.rooms.length<6)d.rooms.push('');
+      if(a==='s-'&&d.rooms.length>1)d.rooms.pop();});
+    save();grid();
+  });
+  tick();
+}
+function nowSec(){
+  const d=new Date();return d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
+}
+function tick(){
+  const ns=nowSec(),r=S.rounds[S.cur];
+  $('clk').textContent=fmt(ns/60).replace(/(\d+:\d+)/,'$1')+'';
+  const rows=[...document.querySelectorAll('#grid tr[data-t]')];
+  let best=null;
+  const all=[];
+  EV.forEach(e=>{const d=evd(r,e.k);for(let i=0;i<d.n;i++){const t=(r.start+i*r[e.iv])*60;all.push({t,e:e.n,i:i+1})}});
+  all.forEach(a=>{if(a.t>=ns&&(!best||a.t<best.t))best=a});
+  rows.forEach(tr=>{const t=+tr.dataset.t*60,hot=Math.abs(t-ns)<=60,rh=Math.abs(t+r.off*60-ns)<=60;tr.classList.toggle('hot',hot);tr.classList.toggle('relhot',rh&&!hot);tr.classList.toggle('past',t<ns&&!hot&&!rh)});
+  document.querySelectorAll('#grid td.sp').forEach(td=>td.classList.toggle('gone',+td.dataset.s*60<ns));
+  const rl=[];
+  EV.forEach(e=>{const d=evd(r,e.k);for(let i=0;i<d.n;i++)rl.push({t:(r.start+i*r[e.iv]+r.off)*60,e:e.n,i:i+1})});
+  let rb=null;rl.forEach(a=>{if(a.t>=ns&&(!rb||a.t<rb.t))rb=a});
+  const rx=$('release');
+  if(rb){const rem=rb.t-ns,m=Math.floor(rem/60),s=rem%60;
+    const same=rl.filter(a=>a.t===rb.t).map(a=>a.e+' #'+a.i).join(', ');
+    rx.innerHTML=`<div class="big">Release to speak ${fmt(rb.t/60)}: ${esc(same)}</div><div class="big cd">in ${m}:${String(s).padStart(2,'0')}</div>`;
+  }else rx.innerHTML=`<div class="big">No more speakers to release in ${esc(r.name)}</div>`;
+  const nx=$('next');
+  if(best){
+    const rem=best.t-ns,m=Math.floor(rem/60),s=rem%60;
+    const same=all.filter(a=>a.t===best.t).map(a=>a.e+' #'+a.i).join(', ');
+    nx.innerHTML=`<div class="big">Next draw ${fmt(best.t/60)}: ${esc(same)}</div><div class="big cd">in ${m}:${String(s).padStart(2,'0')}</div>`;
+  }else nx.innerHTML=`<div class="big">No more draws in ${esc(r.name)}</div>`;
+}
+function all(){tabs();settings();grid()}
+$('ann').value=S.ann;
+$('ann').oninput=e=>{S.ann=e.target.value;save()};
+all();setInterval(tick,1000);
+</script>
+</body>
+</html>
